@@ -126,7 +126,7 @@
 1. Load `valgsteds.csv` as reference table
 2. Use `ValgstedId` as foreign key for all others
 3. Set appropriate data types (integers for counts)
-4. Handle "-" as missing values
+4. Treat standardized `0` values as missing where analytically appropriate
 
 ### For Specific Topics
 
@@ -171,12 +171,12 @@ Examples:
 
 ## File Format Standards
 
-- **Delimiter**: Semicolon (;)
+- **Delimiter**: Comma (,)
 - **Encoding**: UTF-8
 - **Line Ending**: LF (Unix)
-- **Quote Character**: Not used (values with spaces handled by delimiters)
-- **Missing Values**: Empty string or "-"
-- **Decimal Separator**: Comma (,) in display, converted to . in data
+- **Quote Character**: CSV standard quoting where needed
+- **Missing Values**: Original `-` converted to `0`
+- **Decimal Separator**: Dot (.)
 - **Thousands Separator**: Period (.) in some numeric values
 
 ---

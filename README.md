@@ -111,7 +111,7 @@ Each file contains data for a specific topic, organized by voting area.
 
 **All files follow this structure**:
 ```
-Gruppe;ValgstedId;KredsNr;StorKredsNr;LandsdelsNr;[topic-specific columns]
+Gruppe,ValgstedId,KredsNr,StorKredsNr,LandsdelsNr,[topic-specific columns]
 ```
 
 **All EV2024 prefixes have been removed** from column names for readability.
@@ -203,10 +203,11 @@ iger.csv** & **BoligtypeAntalpersoner.csv**
 ## Data Quality Notes
 
 - **All 1,298 voting areas** have been deduplicated and consolidated
-- **Missing values** are represented as empty strings or "-"
+- **Missing values** originally marked as `-` have been standardized to `0`
 - **Column names** have been cleaned by removing "EV2024 - " prefixes
 - **Encoding**: UTF-8 throughout
-- **Delimiter**: Semicolon (;) as in original files
+- **Delimiter**: Comma (,)
+- **Decimal separator**: Dot (.)
 - **Data scope**: 2024 Danish Parliamentary Election (EV 2024)
 
 ## Recommended Next Steps

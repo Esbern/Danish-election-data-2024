@@ -25,12 +25,12 @@ SCHEMA.md                                        ← Database schema details
 import pandas as pd
 
 # Load master reference
-valgsteds = pd.read_csv('organized_data/valgsteds.csv', sep=';')
+valgsteds = pd.read_csv('organized_data/valgsteds.csv', sep=',')
 print(f"Total voting areas: {len(valgsteds)}")
 # Output: Total voting areas: 1298
 
 # Load a topic file
-demographics = pd.read_csv('organized_data/Antal_personer_opgjort_efter_statsborgerskab_kn___.csv', sep=';')
+demographics = pd.read_csv('organized_data/Antal_personer_opgjort_efter_statsborgerskab_kn___.csv', sep=',')
 print(demographics.columns[:10])
 ```
 
@@ -61,8 +61,8 @@ by_region = demographics.groupby('LandsdelsNr').sum(numeric_only=True)
 
 ```python
 # Get income and education data for analysis
-income = pd.read_csv('organized_data/Husstandsindkomster_fordelt_p_afstemningsomrder.csv', sep=';')
-education = pd.read_csv('organized_data/Hjst_fuldfrte_erhvervsuddannelse_og_aldersgrupper.csv', sep=';')
+income = pd.read_csv('organized_data/Husstandsindkomster_fordelt_p_afstemningsomrder.csv', sep=',')
+education = pd.read_csv('organized_data/Hjst_fuldfrte_erhvervsuddannelse_og_aldersgrupper.csv', sep=',')
 
 # Merge by voting area
 combined = income.merge(education, on='ValgstedId', suffixes=('_income', '_edu'))
@@ -86,9 +86,8 @@ print(f"Voting areas in region 1: {len(region_1)}")
 ### 6. Data cleaning
 
 ```python
-# Handle missing values
-demographics_clean = demographics.replace('-', pd.NA)
-demographics_clean = demographics_clean.fillna(0)
+# Missing values are already standardized to 0
+demographics_clean = demographics.copy()
 
 # Convert to numeric
 numeric_cols = demographics.columns[5:]  # Skip location columns
@@ -112,7 +111,7 @@ CREATE TABLE valgsteds (
 );
 
 .mode csv
-.separator ;
+.separator ,
 .import 'organized_data/valgsteds.csv' valgsteds
 
 -- Create and import demographic table
@@ -171,8 +170,8 @@ HAVING SUM(antal_boliger) > 50000;
 library(tidyverse)
 
 # Load data
-valgsteds <- read_delim("organized_data/valgsteds.csv", delim = ";")
-demographics <- read_delim("organized_data/Antal_personer_...csv", delim = ";")
+valgsteds <- read_delim("organized_data/valgsteds.csv", delim = ",")
+demographics <- read_delim("organized_data/Antal_personer_...csv", delim = ",")
 
 # Regional summary
 demographic_summary <- demographics %>%
@@ -196,7 +195,7 @@ combined %>%
 
 ### 1. Open files
 - Use "Open" and select any CSV file
-- Choose ";" as delimiter when prompted
+- Choose "," as delimiter when prompted
 - UTF-8 encoding should be auto-detected
 
 ### 2. Use VLOOKUP for references
@@ -224,15 +223,15 @@ demographics['total'] = (demographics['antal']
     .str.replace(',', '.', regex=False)
     .astype(float))
 
-# Handle '-' as missing
-demographics = demographics.replace('-', np.nan)
+# Optional: treat 0 as missing for selected analyses
+demographics = demographics.replace(0, np.nan)
 ```
 
 ### 2. Calculate percentages
 
 ```python
 # Calculate % of voting areas with specific characteristic
-housing = pd.read_csv('organized_data/BoligtypeAntalbboliger.csv', sep=';')
+housing = pd.read_csv('organized_data/BoligtypeAntalbboliger.csv', sep=',')
 total = housing[['Stuehuse og parcelhuse']].sum()[0]
 housing['pct_singlefamily'] = (housing['Stuehuse og parcelhuse'].astype(float) / total * 100)
 ```
@@ -241,7 +240,7 @@ housing['pct_singlefamily'] = (housing['Stuehuse og parcelhuse'].astype(float) /
 
 ```python
 # Income distribution analysis
-income = pd.read_csv('income_file.csv', sep=';')
+income = pd.read_csv('income_file.csv', sep=',')
 income['income_range'] = pd.cut(
     income['50%-percentil for husstandsindkomst'].astype(float),
     bins=[0, 300000, 400000, 500000, float('inf')],
@@ -256,14 +255,13 @@ income['income_range'] = pd.cut(
 ### Issue: Character encoding errors
 **Solution**: Always specify UTF-8 encoding
 ```python
-df = pd.read_csv('file.csv', sep=';', encoding='utf-8')
+df = pd.read_csv('file.csv', sep=',', encoding='utf-8')
 ```
 
-### Issue: "-" values cause errors in numeric operations
-**Solution**: Replace with NaN or 0
+### Issue: standardized 0 values should be treated as missing in analysis
+**Solution**: Replace selected zero-coded fields with NaN before modeling
 ```python
-df = df.replace('-', 0)
-df = df.replace('-', pd.NA)
+df = df.replace(0, pd.NA)
 ```
 
 ### Issue: ValgstedId doesn't match between files
@@ -292,7 +290,7 @@ result = demographics.merge(housing, on='ValgstedId', how='left')
 ```python
 # Example: Filter before loading
 dtype_dict = {'ValgstedId': int}
-demographics = pd.read_csv('file.csv', sep=';', dtype=dtype_dict)
+demographics = pd.read_csv('file.csv', sep=',', dtype=dtype_dict)
 filtered = demographics[demographics['StorKredsNr'].isin([1, 2])]
 ```
 
@@ -310,7 +308,7 @@ import pandas as pd
 geom = gpd.read_file('afstemnings_områder.gpkg')
 
 # Load demographic data
-demographics = pd.read_csv('demographics.csv', sep=';')
+demographics = pd.read_csv('demographics.csv', sep=',')
 
 # Merge by voting area ID
 merged = geom.merge(demographics, on='ValgstedId')

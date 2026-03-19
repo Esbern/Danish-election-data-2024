@@ -155,7 +155,7 @@ All data values are stored as strings (CSV format):
 | Value Format | Meaning | Example |
 |---|---|---|
 | Numeric | Count or quantity | `1298`, `45` |
-| Dash `-` | Missing/unavailable | `-` |
+| Zero `0` | Standardized missing/unavailable marker (from original `-`) | `0` |
 | Empty | Not applicable | `` |
 | Country names | Geographic origin | `Danmark`, `Tyrkiet` |
 
@@ -165,8 +165,8 @@ All data values are stored as strings (CSV format):
 ```python
 import pandas as pd
 
-valgsteds = pd.read_csv('valgsteds.csv', sep=';')
-demographics = pd.read_csv('Antal_personer_...csv', sep=';')
+valgsteds = pd.read_csv('valgsteds.csv', sep=',')
+demographics = pd.read_csv('Antal_personer_...csv', sep=',')
 
 area_data = demographics[demographics['ValgstedId'] == 101001]
 ```
@@ -178,9 +178,9 @@ data_by_region = demographics.groupby('StorKredsNr')[metric_columns].sum()
 
 ### Query 3: Join multiple topics
 ```python
-demographics = pd.read_csv('Antal_personer_...csv', sep=';')
-housing = pd.read_csv('Boliger_og_personer_...csv', sep=';')
-income = pd.read_csv('Husstandsindkomster_...csv', sep=';')
+demographics = pd.read_csv('Antal_personer_...csv', sep=',')
+housing = pd.read_csv('Boliger_og_personer_...csv', sep=',')
+income = pd.read_csv('Husstandsindkomster_...csv', sep=',')
 
 combined = demographics.merge(housing, on='ValgstedId')\
                       .merge(income, on='ValgstedId')
@@ -190,7 +190,7 @@ combined = demographics.merge(housing, on='ValgstedId')\
 
 - **Voting Areas Covered**: All 1,298 Danish voting areas
 - **Redundancy**: Each topic file contains location columns for easy reference
-- **Missing Data**: Represented as empty string or "-"
+- **Missing Data**: Original `-` values standardized to `0`
 - **Duplicates**: None - each ValgstedId appears once per file
 
 ## Integration Notes for Databases
@@ -221,8 +221,8 @@ CREATE TABLE befolkning_demographics (
 );
 
 -- Import data
-COPY valgsteds FROM 'valgsteds.csv' WITH (FORMAT csv, DELIMITER ';', HEADER);
-COPY befolkning_demographics FROM 'Antal_personer_...csv' WITH (FORMAT csv, DELIMITER ';', HEADER);
+COPY valgsteds FROM 'valgsteds.csv' WITH (FORMAT csv, DELIMITER ',', HEADER);
+COPY befolkning_demographics FROM 'Antal_personer_...csv' WITH (FORMAT csv, DELIMITER ',', HEADER);
 ```
 
 ## File Version History
