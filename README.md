@@ -96,6 +96,12 @@ Master file containing location information for all 1,298 voting areas (afstemni
 - `KredsNr`: Electoral district number
 - `StorKredsNr`: Large electoral district number  
 - `LandsdelsNr`: Regional number
+- `KommuneKode`: Municipality code derived from the first 3 digits of `ValgstedId`
+- `KommuneNavn`: Municipality name from Dataforsyningen
+- `Regionskode`: Region code from Dataforsyningen
+- `RegionNavn`: Region name from Dataforsyningen
+
+These columns make it easier to join the election districts to standard Danish municipality (`kommuner`) and region (`regioner`) datasets.
 
 ### Topic-Specific Files
 

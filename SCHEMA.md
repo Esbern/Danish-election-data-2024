@@ -27,9 +27,15 @@ The master reference file for all voting areas.
 | KredsNr | integer | Electoral district number | 1-10 |
 | StorKredsNr | integer | Large electoral district number | 1-3 |
 | LandsdelsNr | integer | Regional number | 1-5 |
+| KommuneKode | string | Municipality code derived from the first 3 digits of ValgstedId | 101 |
+| KommuneNavn | string | Municipality name from Dataforsyningen | København |
+| Regionskode | string | Region code from Dataforsyningen | 1084 |
+| RegionNavn | string | Region name from Dataforsyningen | Region Hovedstaden |
 
 **Total Records**: 1,298 voting areas  
 **Primary Key**: `ValgstedId`
+
+These administrative columns make it easier to aggregate or join election district data to standard Danish municipality and region datasets.
 
 ## Topic File Structure Pattern
 
