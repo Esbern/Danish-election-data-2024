@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+title: Danish Election Data 2024 - Organized by Topic and Voting Area
+message: "If you use this dataset, please cite it as below."
+type: dataset
+authors:
+  - name: Statistics Denmark
+    website: https://www.dst.dk
+  - name: Klimadatastyrelsen
+contributors:
+  - name: Reorganization and normalization
+    role: other
+date-released: 2024-03-19
+repository-code: https://github.com/yourusername/danish-election-data-2024
+repository-artifact: https://valgdatabase.dst.dk/data
+url: https://valgdatabase.dst.dk/data
+license: CC-BY-4.0
+keywords:
+  - denmark
+  - election
+  - voting areas
+  - afstemningsområder
+  - statistics
+  - demographics
+  - socioeconomic
+  - spatial data
+  - geometry
+  - geopackage
+  - geojson
+  - 2024
+references:
+  - type: website
+    title: Statistics Denmark - Source Attribution Policy
+    url: https://www.dst.dk/en/presse/kildeangivelse
+  - type: website
+    title: Statistics Denmark - Election Database
+    url: https://valgdatabase.dst.dk/
+  - type: website
+    title: Klimadatastyrelsen
+    url: https://kds.dk/
