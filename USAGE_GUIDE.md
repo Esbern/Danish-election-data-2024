@@ -49,12 +49,19 @@ print(f"Electoral district: {area_info['KredsNr'].values[0]}")
 ### 3. Regional aggregation
 
 ```python
+# Join to reference for regional fields
+demographics_with_geo = demographics.merge(
+    valgsteds[['ValgstedId', 'StorKredsNr', 'LandsdelsNr', 'KommuneKode', 'RegionNavn']],
+    on='ValgstedId',
+    how='left'
+)
+
 # Sum all demographic data by electoral district
-by_district = demographics.groupby('StorKredsNr').sum(numeric_only=True)
+by_district = demographics_with_geo.groupby('StorKredsNr').sum(numeric_only=True)
 print(by_district)
 
 # Or by region
-by_region = demographics.groupby('LandsdelsNr').sum(numeric_only=True)
+by_region = demographics_with_geo.groupby('LandsdelsNr').sum(numeric_only=True)
 ```
 
 ### 4. Combine multiple topics
@@ -90,7 +97,7 @@ print(f"Voting areas in region 1: {len(region_1)}")
 demographics_clean = demographics.copy()
 
 # Convert to numeric
-numeric_cols = demographics.columns[5:]  # Skip location columns
+numeric_cols = demographics.columns[1:]  # Skip ValgstedId
 demographics[numeric_cols] = demographics[numeric_cols].apply(pd.to_numeric, errors='coerce')
 ```
 
@@ -291,7 +298,9 @@ result = demographics.merge(housing, on='ValgstedId', how='left')
 # Example: Filter before loading
 dtype_dict = {'ValgstedId': int}
 demographics = pd.read_csv('file.csv', sep=',', dtype=dtype_dict)
-filtered = demographics[demographics['StorKredsNr'].isin([1, 2])]
+geo = pd.read_csv('organized_data/valgsteds.csv', sep=',', dtype=dtype_dict)
+filtered = demographics.merge(geo[['ValgstedId', 'StorKredsNr']], on='ValgstedId', how='left')
+filtered = filtered[filtered['StorKredsNr'].isin([1, 2])]
 ```
 
 ---

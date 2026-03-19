@@ -42,12 +42,8 @@ These administrative columns make it easier to aggregate or join election distri
 All topic files follow this standard structure:
 
 ```
-Location Columns (5 shared with valgsteds.csv):
-├── Gruppe
-├── ValgstedId [FOREIGN KEY]
-├── KredsNr
-├── StorKredsNr
-└── LandsdelsNr
+Key Column:
+└── ValgstedId [FOREIGN KEY]
 
 Topic-Specific Columns (N variables):
 ├── [Metric 1]
@@ -58,9 +54,8 @@ Topic-Specific Columns (N variables):
 ### Example: Income Distribution File
 
 ```
-Gruppe;ValgstedId;KredsNr;StorKredsNr;LandsdelsNr;
-Under 100.000 kr.;100.000 - 149.999 kr;150.000 - 199.999 kr;...;
-50%-percentil for husstandsindkomst;80%-percentil for husstandsindkomst
+ValgstedId,Under 100.000 kr.,100.000 - 149.999 kr,150.000 - 199.999 kr,...,
+50%-percentil for husstandsindkomst,80%-percentil for husstandsindkomst
 ```
 
 ## Topic Classifications
@@ -173,7 +168,12 @@ area_data = demographics[demographics['ValgstedId'] == 101001]
 
 ### Query 2: Sum by region
 ```python
-data_by_region = demographics.groupby('StorKredsNr')[metric_columns].sum()
+demographics_with_geo = demographics.merge(
+    valgsteds[['ValgstedId', 'StorKredsNr']],
+    on='ValgstedId',
+    how='left'
+)
+data_by_region = demographics_with_geo.groupby('StorKredsNr')[metric_columns].sum()
 ```
 
 ### Query 3: Join multiple topics
@@ -189,7 +189,7 @@ combined = demographics.merge(housing, on='ValgstedId')\
 ## Data Completeness
 
 - **Voting Areas Covered**: All 1,298 Danish voting areas
-- **Redundancy**: Each topic file contains location columns for easy reference
+- **Redundancy**: Geographic columns are centralized in `valgsteds.csv`
 - **Missing Data**: Original `-` values standardized to `0`
 - **Duplicates**: None - each ValgstedId appears once per file
 
@@ -209,11 +209,7 @@ CREATE TABLE valgsteds (
 
 -- Create topic table example
 CREATE TABLE befolkning_demographics (
-    gruppe VARCHAR(255),
     valgsted_id INTEGER PRIMARY KEY REFERENCES valgsteds(valgsted_id),
-    kreds_nr INTEGER,
-    stor_kreds_nr INTEGER,  
-    landsdels_nr INTEGER,
     -- Topic-specific columns
     kvinder_0_4_danmark INTEGER,
     kvinder_0_4_nordiske_lande INTEGER,

@@ -25,7 +25,7 @@
 - **Records**: 1,298 voting areas
 - **Primary Key**: ValgstedId
 - **Use**: Join all other files by ValgstedId
-- **Columns**: Gruppe, ValgstedId, KredsNr, StorKredsNr, LandsdelsNr
+- **Columns**: Gruppe, ValgstedId, KredsNr, StorKredsNr, LandsdelsNr, KommuneKode, KommuneNavn, Regionskode, RegionNavn
 - **Size**: ~30 KB
 
 ---
@@ -154,7 +154,7 @@
 
 ## Column Naming Convention
 
-All column names follow this pattern after location columns:
+All topic column names follow this pattern after `ValgstedId`:
 
 ```
 [Metric Description]_[Category 1]_[Category 2]_[Value]
@@ -205,7 +205,7 @@ Examples:
 ## About This Reorganization
 
 **Original Problem**:
-- 5 CSV files with repeated location columns
+- 5 CSV files with repeated location columns in every topic table
 - Inconsistent structure across files
 - Difficult to join data
 - Column names cluttered with EV2024 prefixes and category nesting

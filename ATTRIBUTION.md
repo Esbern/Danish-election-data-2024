@@ -75,7 +75,7 @@ See [LICENSE](LICENSE) for full legal text.
 
 The original data from Statistics Denmark was reorganized to:
 1. Consolidate 5 large CSV files into topic-specific files
-2. Remove redundant geographic columns (Gruppe, ValgstedId, KredsNr, StorKredsNr, LandsdelsNr) and place them in a single reference table (valgsteds.csv)
+2. Remove redundant geographic columns (Gruppe, KredsNr, StorKredsNr, LandsdelsNr) and place them in a single reference table (valgsteds.csv), while retaining ValgstedId as join key
 3. Standardize column naming by removing "EV2024" prefixes
 4. Create a normalized data structure with foreign key relationships via ValgstedId
 

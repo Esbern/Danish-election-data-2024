@@ -111,7 +111,7 @@ Each file contains data for a specific topic, organized by voting area.
 
 **All files follow this structure**:
 ```
-Gruppe,ValgstedId,KredsNr,StorKredsNr,LandsdelsNr,[topic-specific columns]
+ValgstedId,[topic-specific columns]
 ```
 
 **All EV2024 prefixes have been removed** from column names for readability.
@@ -139,7 +139,7 @@ iger.csv** & **BoligtypeAntalpersoner.csv**
 
 ### 7. **Husstande_efter_bilrådighed.csv**
    - Household vehicle access: 0 cars, 1 car, 2+ cars
-   - 8 columns (including location data)
+   - 4 columns (ValgstedId + 3 metric columns)
 
 ### 8. **Husstandsindkomster_fordelt_p_afstemningsomrder.csv**
    - Household income distribution and statistics
@@ -190,8 +190,9 @@ iger.csv** & **BoligtypeAntalpersoner.csv**
 
 ### 2. **Regional Analysis**
    ```
-   All location data (KredsNr, StorKredsNr, LandsdelsNr) is available 
-   in every file for regional grouping and analysis
+   Join topic files to valgsteds.csv using ValgstedId,
+   then group by KredsNr, StorKredsNr, LandsdelsNr,
+   KommuneKode, or RegionNavn
    ```
 
 ### 3. **Cross-Topic Queries**
@@ -219,7 +220,7 @@ iger.csv** & **BoligtypeAntalpersoner.csv**
 
 ## Column Naming Convention
 
-After the 5 location columns, all column names follow this pattern:
+After `ValgstedId`, all topic column names follow this pattern:
 
 ```
 [Metric Description]_[Category 1]_[Category 2]_...
