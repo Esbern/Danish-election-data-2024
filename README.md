@@ -2,11 +2,11 @@
 
 ## Overview
 
-Your election data from the Danish Elections Database (dst.dk) has been reorganized from 5 messy CSV files into a clean, normalized structure with:
+Your election data from the Danish Elections Database (dst.dk) has been reorganized from 5 messy CSV files into a clean structure with:
 
-- **1 Reference File**: `valgsteds.csv` - Master list of voting areas
+- **1 Spatial Master File**: `afstemningsomraader_2024.geojson` - Election areas as of 2024-06-09, enriched with area metadata
 - **19 Topic-Specific Files**: One CSV file per data topic, with EV2024 prefixes removed
-- **All files linked by ValgstedId**: Proper database-like relationships
+- **All topic files linked by ValgstedId**: Consistent key across tabular datasets
 
 ## Data Structure
 
@@ -16,56 +16,42 @@ The spatial files represent **election districts (afstemningsomrader)** intended
 
 ### Geometry files in this folder
 
-- `valgsteds_2024.geojson`: Full geometry export
-- `valgsteds_2024.topo.json`: Full-resolution TopoJSON
-- `valgsteds_2024.simplified.topo.json`: Simplified TopoJSON for web maps
-- `valgsteds_2024_matched.geojson`: Geometry filtered to keys found in `valgsteds.csv`
-- `valgsteds_2024_matched.topo.json`: TopoJSON version of matched geometry
-- `valgsteds_2024_matched.simplified.topo.json`: Simplified matched TopoJSON for web maps
+- `afstemningsomraader_2024.geojson`: Canonical election district geometry for this project
 
 ### Recommended default for users
 
 If your goal is easiest use with the attribute tables, start with:
 
-- `valgsteds_2024_matched.geojson` for GIS workflows and reproducible joins
-- `valgsteds_2024_matched.simplified.topo.json` for web maps and lightweight sharing
+- `afstemningsomraader_2024.geojson` for GIS workflows and reproducible joins
 
 Why this is easiest:
 
-- These files are already filtered to election districts that match tabular IDs
-- They reduce join errors caused by extra geometry records
-- They are much smaller than full exports
+- It is already filtered to election districts valid for the intended analysis date
+- It already includes key area metadata columns for joining and grouping
 
 Projection note:
 
 - GeoJSON is WGS84 longitude/latitude (EPSG:4326)
-- TopoJSON may prompt for CRS in GIS software; if prompted, choose EPSG:4326 for these exports
+- If you export to TopoJSON yourself, choose EPSG:4326 when prompted
 
 ### 30-second quick start
 
-1. Open `valgsteds_2024_matched.geojson` in QGIS.
+1. Open `afstemningsomraader_2024.geojson` in QGIS.
 2. Import any attribute CSV (for example `Sociokonomisk_status_og_brancher_fordelt_p_afst___.csv`).
 3. Join the CSV to geometry:
-   - Geometry key: `kms_stat_id`
+   - Geometry key: `valgstedid`
    - CSV key: `ValgstedId`
-4. Use `valgsteds_2024_matched.simplified.topo.json` when you need a small web map file.
 
-If QGIS asks for CRS on TopoJSON, choose EPSG:4326.
+If QGIS asks for CRS, choose EPSG:4326.
 
 ### Join key for attributes
 
 Use the following key mapping when joining geometry to attributes:
 
-- Geometry field: `kms_stat_id`
-- Attribute field: `ValgstedId` (in `valgsteds.csv` and all topic files)
+- Geometry field: `valgstedid`
+- Attribute field: `ValgstedId` (in all topic files)
 
-Current overlap check:
-
-- 1,298 unique `ValgstedId` values in attributes
-- 1,314 unique `kms_stat_id` values in full geometry
-- 1,272 keys overlap directly
-
-This means some districts are present only in one source. Use the `valgsteds_2024_matched.*` files when you need geometry that is guaranteed to match attribute keys.
+Current overlap check should be verified if you regenerate files. The shipped `afstemningsomraader_2024.geojson` is the canonical geometry source for this repo.
 
 ### Node.js workflow (already configured)
 
@@ -84,22 +70,17 @@ npm run topo:matched:simplified
 
 Geometry source is Klimadatastyrelsen (CC-BY-4.0). Keep attribution and avoid use of official logos.
 
-### Reference File: `valgsteds.csv`
+### Spatial Master File: `afstemningsomraader_2024.geojson`
 
-Master file containing location information for all 1,298 voting areas (afstemningsområder).
+Master geometry file containing 1,298 voting areas (afstemningsområder) with joined area metadata.
 
-**Primary Key**: `ValgstedId`
+**Join Key**: `valgstedid` in geometry joins to `ValgstedId` in topic CSVs
 
-**Columns**:
-- `Gruppe`: Group identifier
-- `ValgstedId`: Unique voting area identifier (PRIMARY KEY)
-- `KredsNr`: Electoral district number
-- `StorKredsNr`: Large electoral district number  
-- `LandsdelsNr`: Regional number
-- `KommuneKode`: Municipality code derived from the first 3 digits of `ValgstedId`
-- `KommuneNavn`: Municipality name from Dataforsyningen
-- `Regionskode`: Region code from Dataforsyningen
-- `RegionNavn`: Region name from Dataforsyningen
+**Columns include**:
+- `valgstedid`: Unique voting area identifier
+- `KommuneKode_2` / `KommuneNavn`: Municipality code and name
+- `Regionskode` / `RegionNavn`: Region code and name
+- `virkningfra`, `virkningtil`, `registreringfra`, `registreringtil`: Temporal metadata
 
 These columns make it easier to join the election districts to standard Danish municipality (`kommuner`) and region (`regioner`) datasets.
 
@@ -107,7 +88,7 @@ These columns make it easier to join the election districts to standard Danish m
 
 Each file contains data for a specific topic, organized by voting area.
 
-**Foreign Key**: All files use `ValgstedId` to link to `valgsteds.csv`
+**Foreign Key**: All files use `ValgstedId` as the common tabular key
 
 **All files follow this structure**:
 ```
