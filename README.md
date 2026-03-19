@@ -5,7 +5,7 @@
 Your election data from the Danish Elections Database (dst.dk) has been reorganized from 5 messy CSV files into a clean, normalized structure with:
 
 - **1 Reference File**: `valgsteds.csv` - Master list of voting areas
-- **33 Topic-Specific Files**: One CSV file per data topic, with EV2024 prefixes removed
+- **19 Topic-Specific Files**: One CSV file per data topic, with EV2024 prefixes removed
 - **All files linked by ValgstedId**: Proper database-like relationships
 
 ## Data Structure
@@ -166,16 +166,16 @@ iger.csv** & **BoligtypeAntalpersoner.csv**
    - Church membership (Danish People's Church)
    - 7 columns (members and non-members)
 
-### 16-31. **Opførelsesår_*.csv** (16 files)
-   - Housing construction year statistics
-   - Broken into periods: before 1940, 1940-1959, 1960-1969, 1970-1979, 1980-1989, 1990-1999, 2000-2009, 2010+
-   - Both dwelling units and persons counted
+### 16-17. **OpfrelsesrAntalboliger.csv** and **OpfrelsesrAntalpersoner.csv**
+   - Housing construction year statistics consolidated into two files
+   - Period columns: before 1940, 1940-1959, 1960-1969, 1970-1979, 1980-1989, 1990-1999, 2000-2009, 2010+
+   - One file for dwelling units, one file for persons
 
-### 32. **Personer_fordelt_efter_samlet_ydelsesvarighed_a___.csv**
+### 18. **Personer_fordelt_efter_samlet_ydelsesvarighed_a___.csv**
    - Social benefits duration by age and voting area
    - 25 columns with age groups and time periods
 
-### 33. **Sociokonomisk_status_og_brancher_fordelt_p_afst___.csv**
+### 19. **Sociokonomisk_status_og_brancher_fordelt_p_afst___.csv**
    - Socio-economic status and industries
    - 141 columns (employment status × industry sectors)
    - Sectors: Agriculture, manufacturing, construction, retail, IT, finance, real estate, services, etc.
@@ -235,7 +235,7 @@ Examples:
 
 | Metric | Value |
 |--------|-------|
-| Total Files | 34 |
+| Total Files | 20 |
 | Total Rows (per file) | 1,298 |
 | Voting Areas | 1,298 |
 | Total Data Points | ~500,000+ |

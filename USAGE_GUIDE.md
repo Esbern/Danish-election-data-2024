@@ -8,7 +8,7 @@ All organized data files are in the `organized_data/` folder:
 valgsteds.csv                                    ← Master reference file
 Antal_personer_...csv                           ← Demographics
 Boliger_og_personer_...csv                      ← Housing
-... 31 more topic files ...
+... 17 more topic files ...
 README.md                                        ← This documentation
 SCHEMA.md                                        ← Database schema details
 ```

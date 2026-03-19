@@ -3,7 +3,7 @@
 **Created**: March 19, 2026  
 **Source**: Danish Elections Database (Statistics Denmark)  
 **Election**: EV 2024  
-**Total Files**: 37 (1 reference + 33 data + 3 documentation)
+**Total CSV Files**: 20 (1 reference + 19 data)
 
 ---
 
@@ -30,7 +30,7 @@
 
 ---
 
-## Topic-Specific Data Files (33 files)
+## Topic-Specific Data Files (19 files)
 
 ### Demographics (2 files)
 
@@ -39,7 +39,7 @@
 | `Antal_personer_opgjort_efter_statsborgerskab_kn___.csv` | Population by citizenship, gender, age | 389 | 1.1M |
 | `Indvandrere_og_efterkommere_fordelt_efter_oprin___.csv` | Immigrants by origin country | 357 | 1.0M |
 
-### Housing Data (14 files)
+### Housing Data (7 files)
 
 #### Size by Area
 | File | Metric | Columns |
@@ -58,25 +58,11 @@
 | `EjerforholdAntalboliger.csv` | Dwelling units | 11 |
 | `EjerforholdAntalpersoner.csv` | Population | 11 |
 
-#### Construction Period (8 files)
+#### Construction Period (2 files)
 | File | Period | Columns |
 |------|--------|---------|
-| `OpfrelsesrAntalboliger1940-1959.csv` | 1940-1959 | 6 |
-| `OpfrelsesrAntalboliger1960-1969.csv` | 1960-1969 | 6 |
-| `OpfrelsesrAntalboliger1970-1979.csv` | 1970-1979 | 6 |
-| `OpfrelsesrAntalboliger1980-1989.csv` | 1980-1989 | 6 |
-| `OpfrelsesrAntalboliger1990-1999.csv` | 1990-1999 | 6 |
-| `OpfrelsesrAntalboliger2000-2009.csv` | 2000-2009 | 6 |
-| `OpfrelsesrAntalboliger2010-9999.csv` | 2010+ | 6 |
-| `OpfrelsesrAntalboligerFr_1940.csv` | Before 1940 | 6 |
-| `OpfrelsesrAntalpersoner1940-1959.csv` | 1940-1959 (population) | 6 |
-| `OpfrelsesrAntalpersoner1960-1969.csv` | 1960-1969 (population) | 6 |
-| `OpfrelsesrAntalpersoner1970-1979.csv` | 1970-1979 (population) | 6 |
-| `OpfrelsesrAntalpersoner1980-1989.csv` | 1980-1989 (population) | 6 |
-| `OpfrelsesrAntalpersoner1990-1999.csv` | 1990-1999 (population) | 6 |
-| `OpfrelsesrAntalpersoner2000-2009.csv` | 2000-2009 (population) | 6 |
-| `OpfrelsesrAntalpersoner2010-9999.csv` | 2010+ (population) | 6 |
-| `OpfrelsesrAntalpersonerFr_1940.csv` | Before 1940 (population) | 6 |
+| `OpfrelsesrAntalboliger.csv` | All periods in columns | 9 |
+| `OpfrelsesrAntalpersoner.csv` | All periods in columns | 9 |
 
 ### Socio-Economic Data (5 files)
 
@@ -105,7 +91,7 @@
 | Metric | Value |
 |--------|-------|
 | **Total Voting Areas** | 1,298 |
-| **Data Files** | 33 |
+| **Data Files** | 19 |
 | **Reference Files** | 1 |
 | **Total Columns (excl. duplicates)** | 1,000+ |
 | **Total Data Points** | ~500,000+ |
@@ -195,7 +181,7 @@ Examples:
 ✓ Removed repeated "Gruppe", "ValgstedId", "KredsNr", "StorKredsNr", "LandsdelsNr" columns  
 ✓ Removed "EV2024 - " prefix from all column names  
 ✓ Consolidated 5 messy CSV files into organized structure  
-✓ Identified 33 distinct topics and grouped accordingly  
+✓ Identified and organized distinct topics for analysis  
 ✓ Established ValgstedId as universal primary/foreign key  
 ✓ Deduplicated voting area references (1,298 unique areas)  
 ✓ Created master reference table (valgsteds.csv)
@@ -223,7 +209,7 @@ Examples:
 - Topic extraction from EV2024 naming convention
 
 **Result**:
-- 33 clean, focused data files
+- 19 clean, focused data files
 - 1 master reference table
 - ~1,300% improved data organization
 - Ready for database import or analysis tools

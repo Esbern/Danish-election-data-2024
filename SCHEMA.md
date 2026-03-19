@@ -11,7 +11,7 @@ valgsteds (Reference Table)
     ├── PK: ValgstedId
     └── Has many: [All Topic Files via ValgstedId]
 
-Topic Files (1-33)
+Topic Files (1-19)
     ├── FK: ValgstedId → valgsteds.ValgstedId
     └── Contains: Topic-specific metrics
 ```
@@ -81,7 +81,7 @@ ValgstedId,Under 100.000 kr.,100.000 - 149.999 kr,150.000 - 199.999 kr,...,
 | BoligtypeAntalpersoner | Housing types | Population |
 | EjerforholdAntalbboliger | Ownership types | Unit counts |
 | EjerforholdAntalpersoner | Ownership types | Population |
-| Opførelsesår_* | Construction period | Units and population |
+| OpfrelsesrAntalboliger / OpfrelsesrAntalpersoner | Construction period (all periods in columns) | Units and population |
 
 **Housing Size Categories**:
 - 0-39 m² | 40-79 m² | 80-119 m² | 120-159 m² | 160-199 m² | 200+ m²
@@ -227,7 +227,7 @@ COPY befolkning_demographics FROM 'Antal_personer_...csv' WITH (FORMAT csv, DELI
 - **Created**: March 19, 2026
 - **Source Data**: EV 2024 Election Database (dst.dk)
 - **Organization Method**: Topic-based normalization with foreign key relationships
-- **Original Files**: 5 Befolkning*.csv files consolidated into 33 topic files + 1 reference
+- **Original Files**: 5 Befolkning*.csv files consolidated into 19 topic files + 1 reference
 
 ---
 
